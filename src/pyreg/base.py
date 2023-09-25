@@ -69,6 +69,9 @@ class Registry:
                 return set()
         return current_level
 
+    def clear(self):
+        self.members = set()
+
     def register(self, member):
         self.members.add(member)
         for index in self.indexes.values():
