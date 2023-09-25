@@ -114,8 +114,7 @@ class RegisteredMeta(type):
 
     @staticmethod
     def _validate_config(cls):
-        # The following conditional is hacky - find a better way!
-        if cls.__name__ == "Registered":
+        if cls.__name__ in {"Registered", "RegisteredModel"}:
             return
         if not hasattr(cls, "Config"):
             raise exceptions.PyregConfigurationError(
