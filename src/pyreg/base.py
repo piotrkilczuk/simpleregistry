@@ -100,6 +100,12 @@ class Registry:
             raise ValueError(f"Too many matches for {fields_and_values}: {matches}")
         return next(iter(matches))
 
+    def __contains__(self, item: Any) -> bool:
+        return item in self.members
+
+    def __len__(self) -> int:
+        return len(self.members)
+
     def __iter__(self):
         return iter(self.members)
 
