@@ -1,5 +1,7 @@
 from typing import Set, Dict, List, Iterable, Optional, Any
 
+from pyreg import exceptions
+
 
 class Index:
     pk: str
@@ -100,3 +102,36 @@ class Registry:
 
     def __iter__(self):
         return iter(self.members)
+
+
+class PyregConfig:
+    registry: Registry
+
+
+class RegisteredMeta(type):
+    def __init__(cls, name, bases, attrs):
+        RegisteredMeta._validate_config(cls)
+
+    @staticmethod
+    def _validate_config(cls):
+        # The following conditional is hacky - find a better way!
+        if cls.__name__ == "Registered":
+            return
+        if not hasattr(cls, "Config"):
+            raise exceptions.PyregConfigurationError(
+                f"Class {cls} doesn't have a Config class"
+            )
+        if not hasattr(cls.Config, "registry"):
+            raise exceptions.PyregConfigurationError(
+                f"Class {cls} doesn't have a Config.registry"
+            )
+        if not isinstance(cls.Config.registry, Registry):
+            raise exceptions.PyregConfigurationError(
+                f"Class {cls} has an invalid registry: {cls.Config.registry}"
+            )
+
+
+class Registered(metaclass=RegisteredMeta):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Config.registry.register(self)

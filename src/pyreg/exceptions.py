@@ -1,0 +1,2 @@
+class PyregConfigurationError(RuntimeError):
+    pass
