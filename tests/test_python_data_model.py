@@ -35,3 +35,22 @@ def test__len__non_empty_registry(
 ):
     MyRegistered()
     assert len(my_registry) == 1
+
+
+def test__iter__empty_registry(
+    my_registry: pyreg.Registry, MyRegistered: Type[pyreg.Registered]
+):
+
+    assert {m for m in my_registry} == set()
+    assert {m for m in my_registry} == set()
+
+
+def test__iter__empty_registry(
+    my_registry: pyreg.Registry, MyRegistered: Type[pyreg.Registered]
+):
+    my_registered_first = MyRegistered()
+    my_registered_second = MyRegistered()
+
+    # This can fail as the set is unordered, adjust if it does
+    assert {m for m in my_registry} == {my_registered_first, my_registered_second}
+    assert {m for m in my_registry} == {my_registered_first, my_registered_second}
