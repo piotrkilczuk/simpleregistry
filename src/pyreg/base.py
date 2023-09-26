@@ -1,4 +1,4 @@
-from typing import Set, Dict, List, Iterable, Optional, Any
+from typing import Set, Dict, List, Iterable, Optional, Any, Type
 
 from pyreg import exceptions
 
@@ -145,3 +145,20 @@ class Registered(metaclass=RegisteredMeta):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.Config.registry.register(self)
+
+
+def register(registry: Registry):
+    client_registry = registry
+
+    def decorator(cls: Type):
+        class Decorated(cls):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.Config.registry.register(self)
+
+            class Config(PyregConfig):
+                registry = client_registry
+
+        return Decorated
+
+    return decorator

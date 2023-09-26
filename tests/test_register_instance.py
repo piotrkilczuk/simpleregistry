@@ -33,3 +33,12 @@ def test_register_same_instance_twice():
 
     my_registry.register(same_instance)
     assert len(my_registry) == 1
+
+
+def test_register_via_decorator(my_registry: pyreg.Registry):
+    @pyreg.register(registry=my_registry)
+    class MyRegistered:
+        pass
+
+    MyRegistered()
+    assert len(my_registry) == 1
