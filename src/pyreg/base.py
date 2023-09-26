@@ -123,7 +123,7 @@ class RegisteredMeta(type):
 
     @staticmethod
     def _validate_config(cls):
-        if cls.__name__ in {"Registered", "RegisteredModel"}:
+        if cls.__name__ in {"Registered", "RegisteredDataclass", "RegisteredModel"}:
             return
         if not hasattr(cls, "Config"):
             raise exceptions.PyregConfigurationError(
