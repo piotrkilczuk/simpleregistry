@@ -1,4 +1,7 @@
+import pytest
+
 import pyreg
+from pyreg import exceptions
 
 
 class MyRegistry(pyreg.Registry):
@@ -65,3 +68,29 @@ def test_filter_some_match():
 
     assert len(my_registry) == 2
     assert my_registry.filter(str_field="a", int_field=1) == {first_instance}
+
+
+def test_get_exactly_one_match():
+    my_registry.clear()
+
+    first_instance = MyRegistered("a", 1)
+    MyRegistered("a", 2)
+
+    assert my_registry.get(str_field="a", int_field=1) == first_instance
+
+
+def test_get_none_matches():
+    my_registry.clear()
+
+    MyRegistered("a", 1)
+
+    with pytest.raises(exceptions.NoMatch):
+        assert my_registry.get(str_field="b")
+
+
+def test_get_more_than_one_matches():
+    MyRegistered("a", 1)
+    MyRegistered("a", 2)
+
+    with pytest.raises(exceptions.MultipleMatches):
+        my_registry.get(str_field="a")

@@ -98,9 +98,11 @@ class Registry:
     def get(self, **fields_and_values):
         matches = self.filter(**fields_and_values)
         if not matches:
-            raise ValueError(f"No matches for {fields_and_values}")
+            raise exceptions.NoMatch(f"No matches for {fields_and_values}")
         if len(matches) > 1:
-            raise ValueError(f"Too many matches for {fields_and_values}: {matches}")
+            raise exceptions.MultipleMatches(
+                f"Too many matches for {fields_and_values}: {matches}"
+            )
         return next(iter(matches))
 
     def __contains__(self, item: Any) -> bool:
