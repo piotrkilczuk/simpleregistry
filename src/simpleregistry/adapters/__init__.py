@@ -1,1 +1,1 @@
-from simpleregistry.adapters.pyreg_pydantic import *
+from simpleregistry.adapters.simpleregistry_pydantic import *

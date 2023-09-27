@@ -3,7 +3,7 @@ import dataclasses
 import pytest
 
 import simpleregistry
-from simpleregistry.adapters import pyreg_dataclasses
+from simpleregistry.adapters import simpleregistry_dataclasses
 
 
 class MyRegistry(simpleregistry.Registry):
@@ -17,7 +17,7 @@ def test_works_with_frozen_eq_dataclass():
     my_registry.clear()
 
     @dataclasses.dataclass(frozen=True, eq=True)
-    class MyDataclass(pyreg_dataclasses.RegisteredDataclass):
+    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
         str_field: str
         int_field: int
 
@@ -36,7 +36,7 @@ def test_works_with_frozen_but_not_eq_dataclass():
     my_registry.clear()
 
     @dataclasses.dataclass(frozen=True, eq=False)
-    class MyDataclass(pyreg_dataclasses.RegisteredDataclass):
+    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
         str_field: str
         int_field: int
 
@@ -55,7 +55,7 @@ def test_works_with_unsafe_hash():
     my_registry.clear()
 
     @dataclasses.dataclass(unsafe_hash=True)
-    class MyDataclass(pyreg_dataclasses.RegisteredDataclass):
+    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
         str_field: str
         int_field: int
 
@@ -74,7 +74,7 @@ def test_works_with_custom_hash():
     my_registry.clear()
 
     @dataclasses.dataclass
-    class MyDataclass(pyreg_dataclasses.RegisteredDataclass):
+    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
         str_field: str
         int_field: int
 
@@ -96,7 +96,7 @@ def test_does_not_work_with_non_hashable():
     my_registry.clear()
 
     @dataclasses.dataclass
-    class MyDataclass(pyreg_dataclasses.RegisteredDataclass):
+    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
         str_field: str
         int_field: int
 
