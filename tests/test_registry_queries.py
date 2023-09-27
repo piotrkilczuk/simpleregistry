@@ -1,17 +1,17 @@
 import pytest
 
-import pyreg
-from pyreg import exceptions
+import simpleregistry
+from simpleregistry import exceptions
 
 
-class MyRegistry(pyreg.Registry):
+class MyRegistry(simpleregistry.Registry):
     pass
 
 
 my_registry = MyRegistry("my_registry")
 
 
-class MyRegistered(pyreg.Registered):
+class MyRegistered(simpleregistry.Registered):
     str_field: str
     int_field: int
 
@@ -20,7 +20,7 @@ class MyRegistered(pyreg.Registered):
         self.int_field = int_field
         super().__init__()
 
-    class Config(pyreg.PyregConfig):
+    class Config(simpleregistry.PyregConfig):
         registry = my_registry
 
 

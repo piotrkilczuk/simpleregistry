@@ -1,6 +1,6 @@
 from typing import Set, Dict, List, Iterable, Optional, Any, Type
 
-from pyreg import exceptions
+from simpleregistry import exceptions
 
 
 class Index:

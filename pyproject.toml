@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "pyreg"
+name = "simpleregistry"
 version = "0.1.0"
 description = ""
 authors = ["Piotr Kilczuk <piotr@kilczuk.dev>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "pyreg", from = "src"}]
+packages = [{include = "simpleregistry", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
