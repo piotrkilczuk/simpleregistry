@@ -7,6 +7,9 @@ jobs:
   pypi_upload:
     name: pypi-upload
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,13 +22,4 @@ jobs:
           pip install poetry
           poetry build
       - name: Publish package
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
-          poetry publish
-#      - name: Publish to PyPI
-#        uses: pypa/gh-action-pypi-publish@master
-#        with:
-#          user: __token__
-#          password: ${{ secrets.PYPI_API_TOKEN }}
-#          skip_existing: true
-#          verbose: true
+        uses: pypa/gh-action-pypi-publish@release/v1

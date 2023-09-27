@@ -1,14 +1,14 @@
-import pyreg
+import simpleregistry
 
 
 def test_register_new_instance():
-    class MyRegistry(pyreg.Registry):
+    class MyRegistry(simpleregistry.Registry):
         pass
 
     my_registry = MyRegistry("my_registry")
 
-    class MyRegistered(pyreg.Registered):
-        class Config(pyreg.PyregConfig):
+    class MyRegistered(simpleregistry.Registered):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     MyRegistered()
@@ -19,13 +19,13 @@ def test_register_new_instance():
 
 
 def test_register_same_instance_twice():
-    class MyRegistry(pyreg.Registry):
+    class MyRegistry(simpleregistry.Registry):
         pass
 
     my_registry = MyRegistry("my_registry")
 
-    class MyRegistered(pyreg.Registered):
-        class Config(pyreg.PyregConfig):
+    class MyRegistered(simpleregistry.Registered):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     same_instance = MyRegistered()
@@ -35,8 +35,8 @@ def test_register_same_instance_twice():
     assert len(my_registry) == 1
 
 
-def test_register_via_decorator(my_registry: pyreg.Registry):
-    @pyreg.register(registry=my_registry)
+def test_register_via_decorator(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(registry=my_registry)
     class MyRegistered:
         pass
 

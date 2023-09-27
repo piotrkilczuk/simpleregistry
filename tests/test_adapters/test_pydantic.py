@@ -1,8 +1,8 @@
-import pyreg
-from pyreg import adapters
+import simpleregistry
+from simpleregistry import adapters
 
 
-class MyRegistry(pyreg.Registry):
+class MyRegistry(simpleregistry.Registry):
     pass
 
 
@@ -13,7 +13,7 @@ class MyRegistered(adapters.RegisteredModel):
     a_string_field: str
     a_numeric_field: int
 
-    class Config(pyreg.PyregConfig):
+    class Config(simpleregistry.PyregConfig):
         registry = my_registry
         hash_fields = ["a_string_field", "a_numeric_field"]
 

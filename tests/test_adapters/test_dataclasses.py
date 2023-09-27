@@ -2,11 +2,11 @@ import dataclasses
 
 import pytest
 
-import pyreg
-from pyreg.adapters import pyreg_dataclasses
+import simpleregistry
+from simpleregistry.adapters import pyreg_dataclasses
 
 
-class MyRegistry(pyreg.Registry):
+class MyRegistry(simpleregistry.Registry):
     pass
 
 
@@ -21,7 +21,7 @@ def test_works_with_frozen_eq_dataclass():
         str_field: str
         int_field: int
 
-        class Config(pyreg.PyregConfig):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
@@ -40,7 +40,7 @@ def test_works_with_frozen_but_not_eq_dataclass():
         str_field: str
         int_field: int
 
-        class Config(pyreg.PyregConfig):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
@@ -59,7 +59,7 @@ def test_works_with_unsafe_hash():
         str_field: str
         int_field: int
 
-        class Config(pyreg.PyregConfig):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
@@ -81,7 +81,7 @@ def test_works_with_custom_hash():
         def __hash__(self) -> int:
             return hash(f"{self.str_field}:{self.int_field}")
 
-        class Config(pyreg.PyregConfig):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
@@ -100,7 +100,7 @@ def test_does_not_work_with_non_hashable():
         str_field: str
         int_field: int
 
-        class Config(pyreg.PyregConfig):
+        class Config(simpleregistry.PyregConfig):
             registry = my_registry
 
     with pytest.raises(TypeError):
