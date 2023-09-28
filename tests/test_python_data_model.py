@@ -11,34 +11,32 @@ other_registry = OtherRegistry("other_registry")
 
 
 def test__contains__empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
+    my_registry: simpleregistry.Registry, MyRegistered: Type
 ):
     my_registered = MyRegistered()
     assert my_registered not in other_registry
 
 
 def test__contains__non_empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
+    my_registry: simpleregistry.Registry, MyRegistered: Type
 ):
     my_registered = MyRegistered()
     assert my_registered in my_registry
 
 
-def test__len__empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
-):
+def test__len__empty_registry(my_registry: simpleregistry.Registry, MyRegistered: Type):
     assert len(my_registry) == 0
 
 
 def test__len__non_empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
+    my_registry: simpleregistry.Registry, MyRegistered: Type
 ):
     MyRegistered()
     assert len(my_registry) == 1
 
 
 def test__iter__empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
+    my_registry: simpleregistry.Registry, MyRegistered: Type
 ):
 
     assert {m for m in my_registry} == set()
@@ -46,7 +44,7 @@ def test__iter__empty_registry(
 
 
 def test__iter__empty_registry(
-    my_registry: simpleregistry.Registry, MyRegistered: Type[simpleregistry.Registered]
+    my_registry: simpleregistry.Registry, MyRegistered: Type
 ):
     my_registered_first = MyRegistered()
     my_registered_second = MyRegistered()

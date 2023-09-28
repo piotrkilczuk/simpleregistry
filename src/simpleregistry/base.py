@@ -115,38 +115,6 @@ class Registry:
         return iter(self.members)
 
 
-class PyregConfig:
-    registry: Registry
-
-
-class RegisteredMeta(type):
-    def __init__(cls, name, bases, attrs):
-        RegisteredMeta._validate_config(cls)
-
-    @staticmethod
-    def _validate_config(cls):
-        if cls.__name__ in {"Registered", "RegisteredDataclass", "RegisteredModel"}:
-            return
-        if not hasattr(cls, "Config"):
-            raise exceptions.PyregConfigurationError(
-                f"Class {cls} doesn't have a Config class"
-            )
-        if not hasattr(cls.Config, "registry"):
-            raise exceptions.PyregConfigurationError(
-                f"Class {cls} doesn't have a Config.registry"
-            )
-        if not isinstance(cls.Config.registry, Registry):
-            raise exceptions.PyregConfigurationError(
-                f"Class {cls} has an invalid registry: {cls.Config.registry}"
-            )
-
-
-class Registered(metaclass=RegisteredMeta):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.Config.registry.register(self)
-
-
 def register(registry: Registry):
     client_registry = registry
 
@@ -154,10 +122,7 @@ def register(registry: Registry):
         class Decorated(cls):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
-                self.Config.registry.register(self)
-
-            class Config(PyregConfig):
-                registry = client_registry
+                client_registry.register(self)
 
         return Decorated
 

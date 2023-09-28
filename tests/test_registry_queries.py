@@ -11,7 +11,8 @@ class MyRegistry(simpleregistry.Registry):
 my_registry = MyRegistry("my_registry")
 
 
-class MyRegistered(simpleregistry.Registered):
+@simpleregistry.register(my_registry)
+class MyRegistered:
     str_field: str
     int_field: int
 
@@ -19,9 +20,6 @@ class MyRegistered(simpleregistry.Registered):
         self.str_field = str_field
         self.int_field = int_field
         super().__init__()
-
-    class Config(simpleregistry.PyregConfig):
-        registry = my_registry
 
 
 def test_all_empty():

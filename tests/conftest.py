@@ -13,8 +13,8 @@ def my_registry():
 
 @pytest.fixture
 def MyRegistered(my_registry: simpleregistry.Registry):
-    class MyRegisteredInner(simpleregistry.Registered):
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
+    @simpleregistry.register(my_registry)
+    class MyRegisteredInner:
+        pass
 
     yield MyRegisteredInner

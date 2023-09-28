@@ -3,26 +3,19 @@ import dataclasses
 import pytest
 
 import simpleregistry
-from simpleregistry.adapters import simpleregistry_dataclasses
 
 
-class MyRegistry(simpleregistry.Registry):
-    pass
+@pytest.fixture
+def MyDataclass(my_registry: simpleregistry.Registry):
+    raise NotImplementedError
 
 
-my_registry = MyRegistry("my_registry")
-
-
-def test_works_with_frozen_eq_dataclass():
-    my_registry.clear()
-
+def test_works_with_frozen_eq_dataclass(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
     @dataclasses.dataclass(frozen=True, eq=True)
-    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
+    class MyDataclass:
         str_field: str
         int_field: int
-
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
 
@@ -32,16 +25,12 @@ def test_works_with_frozen_eq_dataclass():
     assert my_registry.filter(int_field=0) == set()
 
 
-def test_works_with_frozen_but_not_eq_dataclass():
-    my_registry.clear()
-
+def test_works_with_frozen_but_not_eq_dataclass(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
     @dataclasses.dataclass(frozen=True, eq=False)
-    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
+    class MyDataclass:
         str_field: str
         int_field: int
-
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
 
@@ -51,16 +40,12 @@ def test_works_with_frozen_but_not_eq_dataclass():
     assert my_registry.filter(int_field=0) == set()
 
 
-def test_works_with_unsafe_hash():
-    my_registry.clear()
-
+def test_works_with_unsafe_hash(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
     @dataclasses.dataclass(unsafe_hash=True)
-    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
+    class MyDataclass:
         str_field: str
         int_field: int
-
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
 
     my_dataclass = MyDataclass(str_field="a", int_field=1)
 
@@ -70,20 +55,16 @@ def test_works_with_unsafe_hash():
     assert my_registry.filter(int_field=0) == set()
 
 
-def test_works_with_custom_hash():
-    my_registry.clear()
-
+def test_works_with_custom_hash(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
     @dataclasses.dataclass
-    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
+    class MyDataclass:
         str_field: str
         int_field: int
 
         def __hash__(self) -> int:
             return hash(f"{self.str_field}:{self.int_field}")
 
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
-
     my_dataclass = MyDataclass(str_field="a", int_field=1)
 
     assert my_dataclass in my_registry
@@ -92,16 +73,12 @@ def test_works_with_custom_hash():
     assert my_registry.filter(int_field=0) == set()
 
 
-def test_does_not_work_with_non_hashable():
-    my_registry.clear()
-
+def test_does_not_work_with_non_hashable(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
     @dataclasses.dataclass
-    class MyDataclass(simpleregistry_dataclasses.RegisteredDataclass):
+    class MyDataclass:
         str_field: str
         int_field: int
-
-        class Config(simpleregistry.PyregConfig):
-            registry = my_registry
 
     with pytest.raises(TypeError):
         MyDataclass(str_field="a", int_field=1)
