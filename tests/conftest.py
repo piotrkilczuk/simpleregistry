@@ -14,7 +14,11 @@ def my_registry():
 @pytest.fixture
 def MyRegistered(my_registry: simpleregistry.Registry):
     @simpleregistry.register(my_registry)
-    class MyRegisteredInner:
+    class MyModel:
+        """
+        This is a docstring.
+        """
+
         pass
 
-    yield MyRegisteredInner
+    yield MyModel

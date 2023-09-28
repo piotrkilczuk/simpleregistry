@@ -1,3 +1,4 @@
+import functools
 from typing import Set, Dict, List, Iterable, Optional, Any, Type
 
 from simpleregistry import exceptions
@@ -124,6 +125,6 @@ def register(registry: Registry):
                 super().__init__(*args, **kwargs)
                 client_registry.register(self)
 
-        return Decorated
+        return functools.update_wrapper(Decorated, cls, updated=())
 
     return decorator
