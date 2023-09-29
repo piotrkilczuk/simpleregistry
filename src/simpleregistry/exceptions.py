@@ -1,4 +1,8 @@
-class PyregConfigurationError(RuntimeError):
+class PolymorphismNotAllowed(ValueError):
+    pass
+
+
+class TypeNotAllowed(ValueError):
     pass
 
 
