@@ -11,7 +11,7 @@ class MyRegistry(simpleregistry.Registry):
 my_registry = MyRegistry("my_registry")
 
 
-@simpleregistry.register(my_registry)
+@my_registry
 class MyRegistered:
     str_field: str
     int_field: int

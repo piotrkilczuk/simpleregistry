@@ -4,7 +4,7 @@ import simpleregistry
 
 
 def test_register_new_instance(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyRegistered:
         pass
 
@@ -16,7 +16,7 @@ def test_register_new_instance(my_registry: simpleregistry.Registry):
 
 
 def test_register_same_instance_twice(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyRegistered:
         pass
 

@@ -13,7 +13,7 @@ def my_registry():
 
 @pytest.fixture
 def MyRegistered(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyModel:
         """
         This is a docstring.

@@ -11,7 +11,7 @@ def MyDataclass(my_registry: simpleregistry.Registry):
 
 
 def test_works_with_frozen_eq_dataclass(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     @dataclasses.dataclass(frozen=True, eq=True)
     class MyDataclass:
         str_field: str
@@ -26,7 +26,7 @@ def test_works_with_frozen_eq_dataclass(my_registry: simpleregistry.Registry):
 
 
 def test_works_with_frozen_but_not_eq_dataclass(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     @dataclasses.dataclass(frozen=True, eq=False)
     class MyDataclass:
         str_field: str
@@ -41,7 +41,7 @@ def test_works_with_frozen_but_not_eq_dataclass(my_registry: simpleregistry.Regi
 
 
 def test_works_with_unsafe_hash(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     @dataclasses.dataclass(unsafe_hash=True)
     class MyDataclass:
         str_field: str
@@ -56,7 +56,7 @@ def test_works_with_unsafe_hash(my_registry: simpleregistry.Registry):
 
 
 def test_works_with_custom_hash(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     @dataclasses.dataclass
     class MyDataclass:
         str_field: str
@@ -74,7 +74,7 @@ def test_works_with_custom_hash(my_registry: simpleregistry.Registry):
 
 
 def test_does_not_work_with_non_hashable(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     @dataclasses.dataclass
     class MyDataclass:
         str_field: str

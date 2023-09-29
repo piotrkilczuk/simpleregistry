@@ -14,7 +14,7 @@ import simpleregistry
 book_registry = simpleregistry.Registry('books')
 
 
-@simpleregistry.register(book_registry)
+@book_registry
 @dataclasses.dataclass
 class Book:
     isbn: int
