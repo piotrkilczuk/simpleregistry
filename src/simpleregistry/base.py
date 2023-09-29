@@ -49,6 +49,7 @@ class Registry:
     check_type: bool
     allow_subclasses: bool
     allow_polymorphism: bool
+    types_registered: Set[Type]
 
     indexes: Dict[str, Index]
 
@@ -61,6 +62,10 @@ class Registry:
         indexes: Optional[Set[Index]] = None,
     ):
         self.name = name
+        self.check_type = check_type
+        self.allow_subclasses = allow_subclasses
+        self.allow_polymorphism = allow_polymorphism
+        self.types_registered = set()
         self.members = set()
         self.indexes = {}
         if indexes is None:
@@ -74,7 +79,16 @@ class Registry:
         class Decorated(cls):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
-                registry.register(self)
+                if registry.allow_subclasses or type(self) is Decorated:
+                    registry.register(self)
+
+        if not self.allow_polymorphism and len(self.types_registered | {cls}) > 1:
+            raise exceptions.PolymorphismNotAllowed(
+                f"Can't register another type {cls.__name__}. "
+                f"Already registered: {', '.join(t.__name__ for t  in self.types_registered)}"
+            )
+
+        self.types_registered.add(cls)
 
         return functools.update_wrapper(Decorated, cls, updated=())
 
@@ -96,6 +110,12 @@ class Registry:
         self.members = set()
 
     def register(self, member):
+        if self.check_type and not isinstance(member, tuple(self.types_registered)):
+            member_type = type(member)
+            raise exceptions.TypeNotAllowed(
+                f"{member_type.__name__} is not registered with {self.name} registry."
+            )
+
         self.members.add(member)
         for index in self.indexes.values():
             index.populate(member)
