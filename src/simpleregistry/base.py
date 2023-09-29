@@ -45,9 +45,21 @@ class Index:
 
 class Registry:
     members: Set
+
+    check_type: bool
+    allow_subclasses: bool
+    allow_polymorphism: bool
+
     indexes: Dict[str, Index]
 
-    def __init__(self, name: str, indexes: Optional[Set[Index]] = None):
+    def __init__(
+        self,
+        name: str,
+        check_type: bool = True,
+        allow_subclasses: bool = True,
+        allow_polymorphism: bool = False,
+        indexes: Optional[Set[Index]] = None,
+    ):
         self.name = name
         self.members = set()
         self.indexes = {}
@@ -55,6 +67,16 @@ class Registry:
             return
         for index in indexes:
             self.indexes[index.pk] = index
+
+    def __call__(self, cls: Type):
+        registry = self
+
+        class Decorated(cls):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                registry.register(self)
+
+        return functools.update_wrapper(Decorated, cls, updated=())
 
     def _can_use_index(self, fields_and_values: Dict[str, Any]) -> bool:
         return Index.fields_to_index_pk(fields_and_values.keys()) in self.indexes
@@ -114,17 +136,3 @@ class Registry:
 
     def __iter__(self):
         return iter(self.members)
-
-
-def register(registry: Registry):
-    client_registry = registry
-
-    def decorator(cls: Type):
-        class Decorated(cls):
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-                client_registry.register(self)
-
-        return functools.update_wrapper(Decorated, cls, updated=())
-
-    return decorator
