@@ -156,3 +156,10 @@ class Registry:
 
     def __iter__(self):
         return iter(self.members)
+
+
+def register(registry: Registry):
+    def decorator(cls: Type):
+        return registry(cls)
+
+    return decorator

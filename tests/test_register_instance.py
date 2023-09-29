@@ -27,6 +27,10 @@ def test_register_same_instance_twice(my_registry: simpleregistry.Registry):
     assert len(my_registry) == 1
 
 
-def test_update_wrapper(MyRegistered: Type):
-    assert MyRegistered.__name__ == "MyModel"
-    assert MyRegistered.__doc__.strip() == "This is a docstring."
+def test_backwards_compatibility(my_registry: simpleregistry.Registry):
+    @simpleregistry.register(my_registry)
+    class MyRegistered:
+        pass
+
+    MyRegistered()
+    assert len(my_registry) == 1
