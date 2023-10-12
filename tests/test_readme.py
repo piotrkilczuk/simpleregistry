@@ -6,7 +6,7 @@ from typing import List
 import pytest
 
 README_PATH = pathlib.Path(__file__).parent.parent / "README.md"
-README_CHECKSUM_ALLOWED = "48b8b52c44f7359b463aa4ec8f9d64e7"
+README_CHECKSUM_ALLOWED = "78070471bde83adb7ca8b4f42b9fb40e"
 
 
 @pytest.fixture

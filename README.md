@@ -154,3 +154,55 @@ assert magazine in publication_registry
 ```
 
 
+Integrations
+------------
+
+Pydantic
+~~~~~~~~
+
+Pydantic models are supported out of the box, provided you make them hashable.
+One way of doing that is by using the `frozen` option:
+
+```python
+import pydantic
+import simpleregistry
+
+
+publication_registry = simpleregistry.Registry('publications', check_type=False)
+
+
+@publication_registry
+class Book(pydantic.BaseModel):
+    isbn: int
+    title: str
+
+    class Config:
+        frozen = True
+
+
+book = Book(isbn=123, title='The Lord of the Rings')
+assert book in publication_registry
+```
+
+Another option is to write a custom hash function, which can for example return the int value of the primary key:
+
+```python
+import pydantic
+import simpleregistry
+
+
+publication_registry = simpleregistry.Registry('publications', check_type=False)
+
+
+@publication_registry
+class Book(pydantic.BaseModel):
+    isbn: int
+    title: str
+
+    def __hash__(self) -> int:
+        return self.isbn
+        
+        
+book = Book(isbn=123, title='The Lord of the Rings')
+assert book in publication_registry
+``` 
