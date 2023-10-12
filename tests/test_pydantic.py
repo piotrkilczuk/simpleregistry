@@ -5,7 +5,7 @@ import simpleregistry
 
 
 def test_works_with_pydantic_v1_frozen(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyPydanticModel(pydantic_v1.BaseModel):
         str_field: str
         int_field: int
@@ -22,7 +22,7 @@ def test_works_with_pydantic_v1_frozen(my_registry: simpleregistry.Registry):
 
 
 def test_works_with_pydantic_v1_custom_hash(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyPydanticModel(pydantic_v1.BaseModel):
         str_field: str
         int_field: int
@@ -39,7 +39,7 @@ def test_works_with_pydantic_v1_custom_hash(my_registry: simpleregistry.Registry
 
 
 def test_works_with_pydantic_v2_frozen(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyPydanticModel(pydantic_v2.BaseModel):
         str_field: str
         int_field: int
@@ -56,7 +56,7 @@ def test_works_with_pydantic_v2_frozen(my_registry: simpleregistry.Registry):
 
 
 def test_works_with_pydantic_v2_custom_hash(my_registry: simpleregistry.Registry):
-    @simpleregistry.register(my_registry)
+    @my_registry
     class MyPydanticModel(pydantic_v2.BaseModel):
         str_field: str
         int_field: int
