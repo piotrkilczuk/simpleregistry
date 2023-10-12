@@ -157,8 +157,7 @@ assert magazine in publication_registry
 Integrations
 ------------
 
-Pydantic
-~~~~~~~~
+### Pydantic
 
 Pydantic models are supported out of the box, provided you make them hashable.
 One way of doing that is by using the `frozen` option:
