@@ -138,6 +138,18 @@ class Registry:
                 matches.add(member)
         return matches
 
+    def exclude(self, **fields_and_values) -> Set:
+        excludes = set()
+        for member in self:
+            if any(
+                [
+                    getattr(member, field) != value
+                    for field, value in fields_and_values.items()
+                ]
+            ):
+                excludes.add(member)
+        return excludes
+
     def get(self, **fields_and_values):
         matches = self.filter(**fields_and_values)
         if not matches:
