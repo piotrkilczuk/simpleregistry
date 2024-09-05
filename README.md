@@ -32,7 +32,7 @@ assert len(book_registry) == 1
 assert book_registry.all() == {lord_of_the_rings}
 assert book_registry.get(isbn=123) == lord_of_the_rings
 assert book_registry.filter(author='J. R. R. Tolkien') == {lord_of_the_rings}
-
+assert book_registry.exclude(author='J. R. R. Tolkien') == set()
 ```
 
 Works with custom types, standard-library dataclasses and Pydantic. See tests for examples.
